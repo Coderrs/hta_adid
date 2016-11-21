@@ -1,0 +1,216 @@
+<head 
+<!--
+@Author : Sharad Vatsa
+-->
+
+<title >ADID</title>
+<HTA:APPLICATION 
+     APPLICATIONNAME="Get Pre windows 2000 Login Name"
+     SCROLL="no"
+     SINGLEINSTANCE="yes"
+     SHOWINTASKBAR="yes"
+                  SINGLEINSTANCE="yes"
+                  SYSMENU="yes"
+                  MAXIMIZEBUTTON="no"
+                  MINIMIZEBUTTON="no"
+                  
+>
+</head>
+
+<script language="VBScript">
+
+               Function Window_OnLoad()
+                              'Set Window Size and Location
+                              Window.ResizeTo 350, 520
+                              'Move window to center
+                              Window.moveTo (screen.width-600)/2, (screen.height-300)/2
+               End Function
+
+
+    Sub sNCText
+    
+   Dim user_Name , strPath , empl_Id , objRecordSet , objUser
+        user_Name = MyTextBox.value
+        empl_Id = MyEmployeeID.value
+        E_MAIL  = MyEmail.value
+        F_Name  = MyFName.value
+        ' MyTextBox.value = "No SNC ID ' " & user_Name & "'"
+        Const ADS_SCOPE_SUBTREE = 2
+        Set objConnection = CreateObject("ADODB.Connection")
+        Set objCommand =   CreateObject("ADODB.Command")
+        objConnection.Provider = "ADsDSOObject"
+        objConnection.Open "Active Directory Provider"
+        Set objCommand.ActiveConnection = objConnection
+
+        objCommand.Properties("Page Size") = 1000
+        objCommand.Properties("Searchscope") = ADS_SCOPE_SUBTREE 
+        
+        
+        
+        
+if (user_Name <> "EnterADID") then
+  ' alert("Hello1")
+         objCommand.CommandText = _
+         "SELECT ADSPATH FROM 'LDAP://dc=fabricam,dc=com' WHERE objectCategory='user' " & _
+            "AND samaccountname ='" & user_Name & "'"
+            Set objRecordSet = objCommand.Execute
+            strPath = objRecordSet.Fields("ADSPATH").Value
+            Set objUser = GetObject(strPath)
+
+Elseif (empl_Id <> "EnterEENbr") then
+
+          objCommand.CommandText = _
+         "SELECT ADSPATH FROM 'LDAP://dc=fabricam,dc=com' WHERE objectCategory='user' " & _
+            "AND employeeID ='" & empl_Id & "'"
+          '  alert("Hello2")
+            Set objRecordSet = objCommand.Execute
+            strPath = objRecordSet.Fields("ADSPATH").Value
+            Set objUser = GetObject(strPath)
+
+Elseif (E_MAIL <> "EnterEMAILNAME") then             
+           objCommand.CommandText = _
+         "SELECT ADSPATH FROM 'LDAP://dc=fabricam,dc=com' WHERE objectCategory='user' " & _
+            "AND mail ='" & E_MAIL & "'"
+          '  alert("Hello2")
+            Set objRecordSet = objCommand.Execute
+            strPath = objRecordSet.Fields("ADSPATH").Value
+            Set objUser = GetObject(strPath) 
+            
+Else        
+            
+            MyTextBox.value = "EnterADID"
+            MyFName.value = "XXXXXXXXX"
+            MyLName.value = "XXXXXXXXX"
+            MyEmail.value = "EnterEMAILNAME"
+            MyEmployeeID.value = "EnterEENbr"
+
+            alert("DO u want XXXXXXXXX ")
+            Exit Sub
+      
+END if 
+             
+       ' Set objRecordSet = objCommand.Execute
+       ' strPath = objRecordSet.Fields("ADSPATH").Value
+        'Set objUser = GetObject(strPath)
+        
+        ' Getting valuse back to HTMl page 
+        MyTextBox.value = objuser.samaccountname
+        MyFName.value = objuser.givenName
+        MyLName.value = objuser.sn
+        MyEmail.value = objuser.mail
+        MyEmployeeID.value = objuser.employeeID
+        
+             
+      End Sub
+      
+      
+             
+      Sub clipboardTxtInput    
+                    
+           ' --- Copy value to Clip board ---
+            Dim objIE , sText
+            sText = "p:" & MyTextBox.value & "@FABRICAM.COM"
+
+            Set objIE = CreateObject("InternetExplorer.Application")
+            objIE.Navigate "about:blank"
+            Do Until objIE.ReadyState=4: WScript.Sleep 1: Loop
+            objIE.Document.ParentWindow.ClipboardData.SetData "Text", sText
+            objIE.Quit
+           '---
+                   
+      
+      End Sub
+      
+      Sub clipboardIDInput    
+                    
+           ' --- Copy value to Clip board ---
+            Dim objIE , sText
+            sText = MyTextBox.value
+
+            Set objIE = CreateObject("InternetExplorer.Application")
+            objIE.Navigate "about:blank"
+            Do Until objIE.ReadyState=4: WScript.Sleep 1: Loop
+            objIE.Document.ParentWindow.ClipboardData.SetData "Text", sText
+            objIE.Quit
+           '---
+                   
+      
+      End Sub
+      
+      Sub clipboardEMLInput    
+                    
+           ' --- Copy value to Clip board ---
+            Dim objIE , sText
+            sText = MyEmail.value
+
+            Set objIE = CreateObject("InternetExplorer.Application")
+            objIE.Navigate "about:blank"
+            Do Until objIE.ReadyState=4: WScript.Sleep 1: Loop
+            objIE.Document.ParentWindow.ClipboardData.SetData "Text", sText
+            objIE.Quit
+           '---
+                   
+      
+      End Sub
+      
+      Sub clipboardF_NMInput    
+                    
+           ' --- Copy value to Clip board ---
+            Dim objIE , sText
+            sText = MyEmail.value
+
+            Set objIE = CreateObject("InternetExplorer.Application")
+            objIE.Navigate "about:blank"
+            Do Until objIE.ReadyState=4: WScript.Sleep 1: Loop
+            objIE.Document.ParentWindow.ClipboardData.SetData "Text", sText
+            objIE.Quit
+           '---
+                   
+      
+      End Sub
+      
+      Sub clipboardL_NMInput    
+                    
+           ' --- Copy value to Clip board ---
+            Dim objIE , sText
+            sText = MyEmail.value
+
+            Set objIE = CreateObject("InternetExplorer.Application")
+            objIE.Navigate "about:blank"
+            Do Until objIE.ReadyState=4: WScript.Sleep 1: Loop
+            objIE.Document.ParentWindow.ClipboardData.SetData "Text", sText
+            objIE.Quit
+           '---
+                   
+      
+      End Sub
+      
+      
+             
+      Sub clearTxtInputBox
+       
+            MyTextBox.value = "EnterADID"
+            MyFName.value = "XXXXXXXXX"
+            MyLName.value = "XXXXXXXXX"
+            MyEmail.value = "EnterEMAILNAME"
+            MyEmployeeID.value = "EnterEENbr"
+               
+      End Sub
+             
+             
+</script>
+
+<body bgcolor="blue">
+    <p><b>Snc_Sap:&nbsp;<input type="text" style="color: #FFffff; font-family: Verdana; font-weight: bold; font-size: 14px; background-color: #000000;" size="25" name="MyTextBox" size="15" value="EnterADID" ><b></p>
+    <p><b>F_Name: &nbsp;<input type="text" style="color: #FFffff; font-family: Verdana; font-weight: bold; font-size: 14px; background-color: #000000;" size="25" name="MyFName" size="15" value="XXXXXXXXX">    <b></p>
+    <p><b>L_Name: &nbsp;<input type="text" style="color: #FFffff; font-family: Verdana; font-weight: bold; font-size: 14px; background-color: #000000;" size="25" name="MyLName" size="15" value="XXXXXXXXX"><b></p>
+    <p><b>EMl_Ad: &nbsp;<input type="text" style="color: #FFffff; font-family: Verdana; font-weight: bold; font-size: 14px; background-color: #000000;" size="25" name="MyEmail" size="40" value="EnterEMAILNAME"><b></p>
+    <p><b>Empl_Id: &nbsp;<input type="text" style="color: #FFffff; font-family: Verdana; font-weight: bold; font-size: 14px; background-color: #000000;" size="25" name="MyEmployeeID" size="8"  value="EnterEENbr"><b></p>
+             
+    <p> </p>
+    <input type="button"  size="10"value="Search" name="run_button" onClick="sNCText" style=" color: #000000; font-family: Verdana; font-weight: bold; font-size: 10px; background-color: #ffffff;"  >
+    <input type="button"  size="10"value="COPY SAP-SNC" name="run_button" onClick="clipboardTxtInput" style=" color: #000000; font-family: Verdana; font-weight: bold; font-size: 10px; background-color: #ffffff;"  >
+    <input type="button"  size="10"value="Clear ALL " name="run_button" onClick="clearTxtInputBox" style=" color: #000000; font-family: Verdana; font-weight: bold; font-size: 10px; background-color: #ffffff;"  >
+    <input type="button"  size="10"value="COPY AD-ID " name="run_button" onClick="clipboardIDInput" style=" color: #000000; font-family: Verdana; font-weight: bold; font-size: 10px; background-color: #ffffff;"  >
+    <input type="button"  size="10"value="COPY EMAIL" name="run_button" onClick="clipboardEMLInput" style=" color: #000000; font-family: Verdana; font-weight: bold; font-size: 10px; background-color: #ffffff;"  >
+</body>
